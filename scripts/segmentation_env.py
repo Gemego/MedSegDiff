@@ -34,7 +34,8 @@ from datetime import datetime
 import dateutil.tz
 
 
-def iou(outputs: np.array, labels: np.array):
+# def iou(outputs: np.array, labels: np.array):
+def iou(outputs, labels):
     
     SMOOTH = 1e-6
     intersection = (outputs & labels).sum((1, 2))

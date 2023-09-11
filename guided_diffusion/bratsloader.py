@@ -107,7 +107,7 @@ class BRATSDataset3D(torch.utils.data.Dataset):
                     seqtype = f.split('_')[3].split('.')[0]
                     datapoint[seqtype] = os.path.join(root, f)
                 assert set(datapoint.keys()) == self.seqtypes_set, \
-                    f'datapoint is incomplete, keys are {datapoint.keys()}'
+                    f'datapoint is incomplete, keys are {datapoint.keys()}' + root
                 self.database.append(datapoint)
     
     def __len__(self):

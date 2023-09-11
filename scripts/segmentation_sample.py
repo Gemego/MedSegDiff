@@ -56,7 +56,7 @@ def main():
         tran_list = [transforms.Resize((args.image_size,args.image_size)),]
         transform_test = transforms.Compose(tran_list)
 
-        ds = BRATSDataset3D(args.data_dir,transform_test)
+        ds = BRATSDataset3D(args.data_dir,transform_test, True)
         args.in_ch = 5
     datal = th.utils.data.DataLoader(
         ds,
