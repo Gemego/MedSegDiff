@@ -118,16 +118,16 @@ class BRATSDataset3D(torch.utils.data.Dataset):
         n = x // 155
         slice = x % 155
         filedict = self.database[n]
+
         for seqtype in self.seqtypes:
             nib_img = nibabel.load(filedict[seqtype])
             path=filedict[seqtype]
-            o = torch.tensor(nib_img.get_fdata())[:,:,slice]
-            # if seqtype != 'seg':
-            #     o = o / o.max()
+            o = torch.tensor(nib_img.get_fdata())[:, :, slice]
             out.append(o)
         out = torch.stack(out)
+
         if self.test_flag:
-            image=out
+            image = out
             # image = image[..., 8:-8, 8:-8]     #crop to a size of (224, 224)
             if self.transform:
                 image = self.transform(image)
