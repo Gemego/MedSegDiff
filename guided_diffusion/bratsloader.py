@@ -121,7 +121,7 @@ class BRATSDataset3D(torch.utils.data.Dataset):
 
         for seqtype in self.seqtypes:
             nib_img = nibabel.load(filedict[seqtype])
-            path=filedict[seqtype]
+            path = filedict[seqtype]
             o = torch.tensor(nib_img.get_fdata())[:, :, slice]
             out.append(o)
         out = torch.stack(out)
