@@ -132,8 +132,8 @@ class BRATSDataset3D(torch.utils.data.Dataset):
             if self.transform:
                 image = self.transform(image)
             return (image, image, path.split('.nii')[0] + "_slice" + str(slice)+ ".nii") # virtual path
-        else:
 
+        else:
             image = out[:-1, ...]
             label = out[-1, ...][None, ...]
             # image = image[..., 8:-8, 8:-8]      #crop to a size of (224, 224)
