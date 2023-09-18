@@ -131,6 +131,7 @@ class BRATSDataset3D(torch.utils.data.Dataset):
             # image = image[..., 8:-8, 8:-8]     #crop to a size of (224, 224)
             if self.transform:
                 image = self.transform(image)
+
             return (image, image, path.split('.nii')[0] + "_slice" + str(slice)+ ".nii") # virtual path
 
         else:
@@ -139,12 +140,11 @@ class BRATSDataset3D(torch.utils.data.Dataset):
             # image = image[..., 8:-8, 8:-8]      #crop to a size of (224, 224)
             # label = label[..., 8:-8, 8:-8]
             label = torch.where(label > 0, 1, 0).float()  #merge all tumor classes into one
+            
             if self.transform:
                 state = torch.get_rng_state()
                 image = self.transform(image)
                 torch.set_rng_state(state)
                 label = self.transform(label)
+            
             return (image, label, path.split('.nii')[0] + "_slice" + str(slice)+ ".nii") # virtual path
-
-
-
