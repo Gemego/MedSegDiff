@@ -89,7 +89,7 @@ class BRATSDataset3D(torch.utils.data.Dataset):
         self.directory = os.path.expanduser(directory)
         self.transform = transform
 
-        self.test_flag=test_flag
+        self.test_flag = test_flag
         if test_flag:
             self.seqtypes = ['t1', 't1ce', 't2', 'flair']
         else:
