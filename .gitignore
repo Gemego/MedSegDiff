@@ -1,0 +1,15 @@
+# ignore all log files
+*.log
+
+# ignore all outputs in data directory
+/data/
+
+# ignore all bash file
+*.sh
+
+*.pyc
+
+*.png
+*.gif
+# .gitignore
+.idea
