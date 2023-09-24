@@ -146,5 +146,5 @@ class BRATSDataset3D(torch.utils.data.Dataset):
                 image = self.transform(image)
                 torch.set_rng_state(state)
                 label = self.transform(label)
-            
+
             return (image, label, path.split('.nii')[0] + "_slice" + str(slice)+ ".nii") # virtual path
