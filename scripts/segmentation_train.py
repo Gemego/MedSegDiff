@@ -51,6 +51,7 @@ def main():
         ds,
         batch_size=args.batch_size,
         shuffle=True)
+
     data = iter(datal)
 
     logger.log("creating model and diffusion...")
@@ -58,6 +59,7 @@ def main():
     model, diffusion = create_model_and_diffusion(
         **args_to_dict(args, model_and_diffusion_defaults().keys())
     )
+
     if args.multi_gpu:
         model = th.nn.DataParallel(model,device_ids=[int(id) for id in args.multi_gpu.split(',')])
         model.to(device = th.device('cuda', int(args.gpu_dev)))
