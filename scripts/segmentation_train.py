@@ -35,7 +35,7 @@ def main():
         ds = ISICDataset(args, args.data_dir, transform_train)
         args.in_ch = 4
     elif args.data_name == 'BRATS':
-        tran_list = [transforms.Resize((args.image_size,args.image_size)),]
+        tran_list = [transforms.Resize((args.image_size, args.image_size)),]
         transform_train = transforms.Compose(tran_list)
 
         ds = BRATSDataset3D(args.data_dir, transform_train, test_flag=False)
