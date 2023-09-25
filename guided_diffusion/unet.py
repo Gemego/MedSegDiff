@@ -268,6 +268,7 @@ class ResBlock(TimestepBlock):
                 2 * self.out_channels if use_scale_shift_norm else self.out_channels,
             ),
         )
+
         self.out_layers = nn.Sequential(
             normalization(self.out_channels),
             nn.SiLU(),
@@ -307,9 +308,12 @@ class ResBlock(TimestepBlock):
             h = in_conv(h)
         else:
             h = self.in_layers(x)
+
         emb_out = self.emb_layers(emb).type(h.dtype)
+
         while len(emb_out.shape) < len(h.shape):
             emb_out = emb_out[..., None]
+
         if self.use_scale_shift_norm:
             out_norm, out_rest = self.out_layers[0], self.out_layers[1:]
             scale, shift = th.chunk(emb_out, 2, dim=1)
@@ -318,6 +322,7 @@ class ResBlock(TimestepBlock):
         else:
             h = h + emb_out
             h = self.out_layers(h)
+
         return self.skip_connection(x) + h
 
 
@@ -608,7 +613,6 @@ class UNetModel_v1preview(nn.Module):
                 self.input_blocks.append(TimestepEmbedSequential(*layers))
                 self._feature_size += ch
                 input_block_chans.append(ch)
-
 
             if level != len(channel_mult) - 1:
                 out_ch = ch
@@ -906,7 +910,6 @@ class UNetModel_newpreview(nn.Module):
                 self.input_blocks.append(TimestepEmbedSequential(*layers))
                 self._feature_size += ch
                 input_block_chans.append(ch)
-
 
             if level != len(channel_mult) - 1:
                 out_ch = ch
