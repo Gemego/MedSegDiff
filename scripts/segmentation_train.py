@@ -47,7 +47,7 @@ def main():
         ds = CustomDataset(args, args.data_dir, transform_train)
         args.in_ch = 4
         
-    datal= th.utils.data.DataLoader(
+    datal = th.utils.data.DataLoader(
         ds,
         batch_size=args.batch_size,
         shuffle=True)
