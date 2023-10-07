@@ -136,6 +136,7 @@ class Downsample(nn.Module):
         self.use_conv = use_conv
         self.dims = dims
         stride = 2 if dims != 3 else (1, 2, 2)
+
         if use_conv:
             self.op = conv_nd(
                 dims, self.channels, self.out_channels, 3, stride=stride, padding=1
@@ -883,7 +884,6 @@ class UNetModel_newpreview(nn.Module):
         ch = model_channels
         ds = 1
         for level, mult in enumerate(channel_mult):
-            
             for _ in range(num_res_blocks):
                 layers = [
                     ResBlock(
@@ -979,7 +979,9 @@ class UNetModel_newpreview(nn.Module):
                         use_scale_shift_norm=use_scale_shift_norm,
                     )
                 ]
+
                 ch = model_channels * mult
+
                 if ds in attention_resolutions:
                     layers.append(
                         AttentionBlock(
@@ -990,6 +992,7 @@ class UNetModel_newpreview(nn.Module):
                             use_new_attention_order=use_new_attention_order,
                         )
                     )
+
                 if level and i == num_res_blocks:
                     out_ch = ch
                     layers.append(
@@ -1007,6 +1010,7 @@ class UNetModel_newpreview(nn.Module):
                         else Upsample(ch, conv_resample, dims=dims, out_channels=out_ch)
                     )
                     ds //= 2
+
                 self.output_blocks.append(TimestepEmbedSequential(*layers))
                 self._feature_size += ch
 
