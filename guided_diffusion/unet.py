@@ -2548,9 +2548,3 @@ class Generic_UNet(SegmentationNetwork):
                 tmp += np.prod(map_size, dtype=np.int64) * num_classes
             # print(p, map_size, num_feat, tmp)
         return tmp
-
-
-
-
-
-
