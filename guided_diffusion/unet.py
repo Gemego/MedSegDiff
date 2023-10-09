@@ -770,14 +770,14 @@ class UNetModel_v1preview(nn.Module):
             emb = emb + self.label_emb(y)
 
         h = x.type(self.dtype)
-        c = h[:,:-1,...]
+        c = h[:, :-1, ...]
         hlist= []
         for ind, module in enumerate(self.input_blocks):
             if len(emb.size()) > 2:
                 emb = emb.squeeze()
             h = module(h, emb)
             hs.append(h)
-        uemb, cal = self.highway_forward(c, [hs[3],hs[6],hs[9],hs[12]])
+        uemb, cal = self.highway_forward(c, [hs[3], hs[6], hs[9], hs[12]])
         h = h + uemb
         h = self.middle_block(h, emb)
         for module in self.output_blocks:
