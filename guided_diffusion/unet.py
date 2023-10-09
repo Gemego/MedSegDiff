@@ -2265,6 +2265,7 @@ class Generic_UNet(SegmentationNetwork):
         self.convolutional_upsampling = convolutional_upsampling
         self.convolutional_pooling = convolutional_pooling
         self.upscale_logits = upscale_logits
+
         if nonlin_kwargs is None:
             nonlin_kwargs = {'negative_slope': 1e-2, 'inplace': True}
         if dropout_op_kwargs is None:
@@ -2297,6 +2298,7 @@ class Generic_UNet(SegmentationNetwork):
                 pool_op_kernel_sizes = [(2, 2)] * num_pool
             if conv_kernel_sizes is None:
                 conv_kernel_sizes = [(3, 3)] * (num_pool + 1)
+
         elif conv_op == nn.Conv3d:
             upsample_mode = 'trilinear'
             pool_op = nn.MaxPool3d
@@ -2305,6 +2307,7 @@ class Generic_UNet(SegmentationNetwork):
                 pool_op_kernel_sizes = [(2, 2, 2)] * num_pool
             if conv_kernel_sizes is None:
                 conv_kernel_sizes = [(3, 3, 3)] * (num_pool + 1)
+
         else:
             raise ValueError("unknown convolution dimensionality, conv op: %s" % str(conv_op))
 
@@ -2351,14 +2354,17 @@ class Generic_UNet(SegmentationNetwork):
                                                               self.norm_op_kwargs, self.dropout_op,
                                                               self.dropout_op_kwargs, self.nonlin, self.nonlin_kwargs,
                                                               first_stride, basic_block=basic_block))
+
             if d < num_pool -1 and self.highway:
                 self.conv_trans_blocks_a.append(conv_nd(2, int(d/2 + 1) * 128, 2 **(d+5), 1))
                 self.conv_trans_blocks_b.append(conv_nd(2, 2 **(d+5), 1, 1))
+
             if d != num_pool - 1 and self.highway:
                 self.ffparser.append(FFParser(output_features, 256 // (2 **(d+1)), 256 // (2 **(d+2))+1))
 
             if not self.convolutional_pooling:
                 self.td.append(pool_op(pool_op_kernel_sizes[d]))
+
             input_features = output_features
             output_features = int(np.round(output_features * feat_map_mul_on_downscale))
 
