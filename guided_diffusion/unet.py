@@ -2360,7 +2360,7 @@ class Generic_UNet(SegmentationNetwork):
                 self.conv_trans_blocks_b.append(conv_nd(2, 2 **(d+5), 1, 1))
 
             if d != num_pool - 1 and self.highway:
-                self.ffparser.append(FFParser(output_features, 256 // (2 **(d+1)), 256 // (2 **(d+2))+1))
+                self.ffparser.append(FFParser(output_features, 256 // (2 **(d+1)), 256 // (2 **(d+2)) + 1))
 
             if not self.convolutional_pooling:
                 self.td.append(pool_op(pool_op_kernel_sizes[d]))
@@ -2485,10 +2485,10 @@ class Generic_UNet(SegmentationNetwork):
                 h = self.conv_trans_blocks_a[d](h)
                 h = self.ffparser[d](h)
                 ha = self.conv_trans_blocks_b[d](h)
-                hb = th.mean(h,(2,3))
-                hb = hb[:,:,None,None]
+                hb = th.mean(h, (2,3))
+                hb = hb[:, :, None, None]
                 x = x * ha * hb
-            
+
 
         x = self.conv_blocks_context[-1](x)
         emb = conv_nd(2, x.size(1), 512, 1).to(device = x.device)(x)
@@ -2501,6 +2501,7 @@ class Generic_UNet(SegmentationNetwork):
                 seg_outputs.append(self.final_nonlin(self.seg_outputs[u](x)))
             if self.anchor_out and (not self._deep_supervision):
                 anch_outputs.append(x)
+
         if not seg_outputs:
             seg_outputs.append(self.final_nonlin(self.seg_outputs[0](x)))
 
@@ -2510,7 +2511,7 @@ class Generic_UNet(SegmentationNetwork):
         if self.anchor_out:
             return tuple([i(j) for i, j in
                                         zip(list(self.upscale_logits_ops)[::-1], anch_outputs[:-1][::-1])]),seg_outputs[-1]
-                                            
+                        
         else:
             return emb, seg_outputs[-1]
 
