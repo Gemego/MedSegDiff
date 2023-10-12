@@ -1088,7 +1088,7 @@ class UNetModel_newpreview(nn.Module):
                 emb = emb.squeeze()
             if ind == 0:
                 h = module(h, emb)
-                h = h + th.cat((anch[0], anch[0], anch[1]),1).detach() # 32 + 32 + 64 in 256 res
+                h = h + th.cat((anch[0], anch[0], anch[1]), 1).detach() # 32 + 32 + 64 in 256 res
             else:
                 h = module(h, emb)
             hs.append(h)
@@ -2094,7 +2094,9 @@ class ConvDropoutNormNonlin(nn.Module):
                  norm_op=nn.BatchNorm2d, norm_op_kwargs=None,
                  dropout_op=nn.Dropout2d, dropout_op_kwargs=None,
                  nonlin=nn.LeakyReLU, nonlin_kwargs=None):
+
         super(ConvDropoutNormNonlin, self).__init__()
+
         if nonlin_kwargs is None:
             nonlin_kwargs = {'negative_slope': 1e-2, 'inplace': True}
         if dropout_op_kwargs is None:
@@ -2114,11 +2116,12 @@ class ConvDropoutNormNonlin(nn.Module):
         self.norm_op = norm_op
 
         self.conv = self.conv_op(input_channels, output_channels, **self.conv_kwargs)
-        if self.dropout_op is not None and self.dropout_op_kwargs['p'] is not None and self.dropout_op_kwargs[
-            'p'] > 0:
+
+        if self.dropout_op is not None and self.dropout_op_kwargs['p'] is not None and self.dropout_op_kwargs['p'] > 0:
             self.dropout = self.dropout_op(**self.dropout_op_kwargs)
         else:
             self.dropout = None
+
         self.instnorm = self.norm_op(output_channels, **self.norm_op_kwargs)
         self.lrelu = self.nonlin(**self.nonlin_kwargs)
 
@@ -2252,6 +2255,7 @@ class Generic_UNet(SegmentationNetwork):
                  upscale_logits=False, convolutional_pooling=False, convolutional_upsampling=False,
                  max_num_features=None, basic_block=ConvDropoutNormNonlin,
                  seg_output_use_bias=False):
+
         """
         basically more flexible than v1, architecture is the same
 
@@ -2261,6 +2265,7 @@ class Generic_UNet(SegmentationNetwork):
 
         Questions? -> f.isensee@dkfz.de
         """
+    
         super(Generic_UNet, self).__init__()
         self.convolutional_upsampling = convolutional_upsampling
         self.convolutional_pooling = convolutional_pooling
