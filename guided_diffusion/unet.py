@@ -2255,6 +2255,7 @@ class Generic_UNet(SegmentationNetwork):
                  upscale_logits=False, convolutional_pooling=False, convolutional_upsampling=False,
                  max_num_features=None, basic_block=ConvDropoutNormNonlin,
                  seg_output_use_bias=False):
+
         """
         basically more flexible than v1, architecture is the same
 
@@ -2264,6 +2265,7 @@ class Generic_UNet(SegmentationNetwork):
 
         Questions? -> f.isensee@dkfz.de
         """
+    
         super(Generic_UNet, self).__init__()
         self.convolutional_upsampling = convolutional_upsampling
         self.convolutional_pooling = convolutional_pooling
@@ -2351,6 +2353,7 @@ class Generic_UNet(SegmentationNetwork):
 
             self.conv_kwargs['kernel_size'] = self.conv_kernel_sizes[d]
             self.conv_kwargs['padding'] = self.conv_pad_sizes[d]
+            
             # add convolutions
             self.conv_blocks_context.append(StackedConvLayers(input_features, output_features, num_conv_per_stage,
                                                               self.conv_op, self.conv_kwargs, self.norm_op,
