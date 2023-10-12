@@ -1088,7 +1088,7 @@ class UNetModel_newpreview(nn.Module):
                 emb = emb.squeeze()
             if ind == 0:
                 h = module(h, emb)
-                h = h + th.cat((anch[0], anch[0], anch[1]),1).detach() # 32 + 32 + 64 in 256 res
+                h = h + th.cat((anch[0], anch[0], anch[1]), 1).detach() # 32 + 32 + 64 in 256 res
             else:
                 h = module(h, emb)
             hs.append(h)
