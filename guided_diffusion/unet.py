@@ -2094,7 +2094,9 @@ class ConvDropoutNormNonlin(nn.Module):
                  norm_op=nn.BatchNorm2d, norm_op_kwargs=None,
                  dropout_op=nn.Dropout2d, dropout_op_kwargs=None,
                  nonlin=nn.LeakyReLU, nonlin_kwargs=None):
+
         super(ConvDropoutNormNonlin, self).__init__()
+
         if nonlin_kwargs is None:
             nonlin_kwargs = {'negative_slope': 1e-2, 'inplace': True}
         if dropout_op_kwargs is None:
@@ -2114,11 +2116,12 @@ class ConvDropoutNormNonlin(nn.Module):
         self.norm_op = norm_op
 
         self.conv = self.conv_op(input_channels, output_channels, **self.conv_kwargs)
-        if self.dropout_op is not None and self.dropout_op_kwargs['p'] is not None and self.dropout_op_kwargs[
-            'p'] > 0:
+
+        if self.dropout_op is not None and self.dropout_op_kwargs['p'] is not None and self.dropout_op_kwargs['p'] > 0:
             self.dropout = self.dropout_op(**self.dropout_op_kwargs)
         else:
             self.dropout = None
+
         self.instnorm = self.norm_op(output_channels, **self.norm_op_kwargs)
         self.lrelu = self.nonlin(**self.nonlin_kwargs)
 
