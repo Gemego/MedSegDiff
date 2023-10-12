@@ -2192,6 +2192,7 @@ class StackedConvLayers(nn.Module):
             self.conv_kwargs_first_conv = conv_kwargs
 
         super(StackedConvLayers, self).__init__()
+
         self.blocks = nn.Sequential(
             *([basic_block(input_feature_channels, output_feature_channels, self.conv_op,
                            self.conv_kwargs_first_conv,
