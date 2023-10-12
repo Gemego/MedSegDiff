@@ -2363,11 +2363,11 @@ class Generic_UNet(SegmentationNetwork):
                                                               first_stride, basic_block=basic_block))
 
             if d < num_pool -1 and self.highway:
-                self.conv_trans_blocks_a.append(conv_nd(2, int(d/2 + 1) * 128, 2 **(d+5), 1))
-                self.conv_trans_blocks_b.append(conv_nd(2, 2 **(d+5), 1, 1))
+                self.conv_trans_blocks_a.append(conv_nd(2, int(d/2 + 1) * 128, 2 **(d + 5), 1))
+                self.conv_trans_blocks_b.append(conv_nd(2, 2 **(d + 5), 1, 1))
 
             if d != num_pool - 1 and self.highway:
-                self.ffparser.append(FFParser(output_features, 256 // (2 **(d+1)), 256 // (2 **(d+2)) + 1))
+                self.ffparser.append(FFParser(output_features, 256 // (2 **(d + 1)), 256 // (2 **(d + 2)) + 1))
 
             if not self.convolutional_pooling:
                 self.td.append(pool_op(pool_op_kernel_sizes[d]))
@@ -2440,6 +2440,7 @@ class Generic_UNet(SegmentationNetwork):
                                   self.norm_op, self.norm_op_kwargs, self.dropout_op, self.dropout_op_kwargs,
                                   self.nonlin, self.nonlin_kwargs, basic_block=basic_block)
             ))
+
         if self._deep_supervision:
             for ds in range(len(self.conv_blocks_localization)):
                 self.seg_outputs.append(conv_op(self.conv_blocks_localization[ds][-1].output_channels, num_classes,
@@ -2469,6 +2470,7 @@ class Generic_UNet(SegmentationNetwork):
         self.td = nn.ModuleList(self.td)
         self.tu = nn.ModuleList(self.tu)
         self.seg_outputs = nn.ModuleList(self.seg_outputs)
+
         if self.upscale_logits:
             self.upscale_logits_ops = nn.ModuleList(
                 self.upscale_logits_ops)  # lambda x:x is not a Module so we need to distinguish here
