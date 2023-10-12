@@ -1081,7 +1081,7 @@ class UNetModel_newpreview(nn.Module):
             emb = emb + self.label_emb(y)
 
         h = x.type(self.dtype)
-        c = h[:,:-1,...]
+        c = h[:, :-1, ...]
         anch, cal = self.highway_forward(c)
         for ind, module in enumerate(self.input_blocks):
             if len(emb.size()) > 2:
@@ -2348,6 +2348,7 @@ class Generic_UNet(SegmentationNetwork):
 
             self.conv_kwargs['kernel_size'] = self.conv_kernel_sizes[d]
             self.conv_kwargs['padding'] = self.conv_pad_sizes[d]
+            
             # add convolutions
             self.conv_blocks_context.append(StackedConvLayers(input_features, output_features, num_conv_per_stage,
                                                               self.conv_op, self.conv_kwargs, self.norm_op,
