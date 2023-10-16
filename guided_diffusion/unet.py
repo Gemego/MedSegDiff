@@ -2480,7 +2480,7 @@ class Generic_UNet(SegmentationNetwork):
             self.apply(self.weightInitializer)
             # self.apply(print_module_training_status)
 
-    def forward(self, x, hs = None):
+    def forward(self, x, hs=None):
         skips = []
         seg_outputs = []
         anch_outputs = []
