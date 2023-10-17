@@ -2431,7 +2431,7 @@ class Generic_UNet(SegmentationNetwork):
 
             self.conv_kwargs['kernel_size'] = self.conv_kernel_sizes[-(u + 1)]
             self.conv_kwargs['padding'] = self.conv_pad_sizes[-(u + 1)]
-    
+
             self.conv_blocks_localization.append(nn.Sequential(
                 StackedConvLayers(n_features_after_tu_and_concat, nfeatures_from_skip, num_conv_per_stage - 1,
                                   self.conv_op, self.conv_kwargs, self.norm_op, self.norm_op_kwargs, self.dropout_op,
