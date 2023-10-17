@@ -2507,8 +2507,10 @@ class Generic_UNet(SegmentationNetwork):
             x = self.tu[u](x)
             x = th.cat((x, skips[-(u + 1)]), dim=1)
             x = self.conv_blocks_localization[u](x)
+            
             if self._deep_supervision:
                 seg_outputs.append(self.final_nonlin(self.seg_outputs[u](x)))
+            
             if self.anchor_out and (not self._deep_supervision):
                 anch_outputs.append(x)
 
