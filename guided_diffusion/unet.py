@@ -2378,7 +2378,6 @@ class Generic_UNet(SegmentationNetwork):
             output_features = min(output_features, self.max_num_features)
         
 
-
         # now the bottleneck.
         # determine the first stride
         if self.convolutional_pooling:
