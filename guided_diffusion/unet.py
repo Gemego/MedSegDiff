@@ -2344,7 +2344,7 @@ class Generic_UNet(SegmentationNetwork):
         output_features = base_num_features
         input_features = input_channels
 
-        for d in range(num_pool):
+        for d in range(num_pool): # num_pool 为下采样（即上采样）的次数
             # determine the first stride
             if d != 0 and self.convolutional_pooling:
                 first_stride = pool_op_kernel_sizes[d - 1]
@@ -2372,7 +2372,7 @@ class Generic_UNet(SegmentationNetwork):
                 self.td.append(pool_op(pool_op_kernel_sizes[d]))
 
             input_features = output_features
-            output_features = int(np.round(output_features * feat_map_mul_on_downscale))
+            output_features = int(np.round(output_features * feat_map_mul_on_downscale)) # 每次下采样特征数呈倍数增加
 
             output_features = min(output_features, self.max_num_features)
         
