@@ -1056,9 +1056,8 @@ class UNetModel_newpreview(nn.Module):
         hu = layer_norm(h.size()[1:])(h)
         return cu * hu * h
     
-    def highway_forward(self,x, hs = None):
-        return self.hwm(x,hs = None)
-
+    def highway_forward(self, x, hs=None):
+        return self.hwm(x, hs=None)
 
     def forward(self, x, timesteps, y=None):
         """
