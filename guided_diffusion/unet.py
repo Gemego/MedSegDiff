@@ -2450,6 +2450,7 @@ class Generic_UNet(SegmentationNetwork):
 
         self.upscale_logits_ops = []
         cum_upsample = np.cumprod(np.vstack(pool_op_kernel_sizes), axis=0)[::-1]
+
         for usl in range(num_pool - 1):
             if self.upscale_logits:
                 self.upscale_logits_ops.append(hwUpsample(scale_factor=tuple([int(i) for i in cum_upsample[usl + 1]]),
