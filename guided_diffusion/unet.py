@@ -2333,11 +2333,11 @@ class Generic_UNet(SegmentationNetwork):
             self.max_num_features = max_num_features
 
         self.conv_blocks_context = []
-        self.conv_blocks_localization = []
+        self.conv_blocks_localization = [] # 负责将skip和上采样拼接后的feature map做卷积，将特征数减少为拼接前的数量
         self.conv_trans_blocks_a = []
         self.conv_trans_blocks_b = []
-        self.td = []
-        self.tu = []
+        self.td = [] # 负责上采样的模块列表
+        self.tu = [] # 负责下采样的模块列表
         self.ffparser = []
         self.seg_outputs = []
 
@@ -2522,7 +2522,7 @@ class Generic_UNet(SegmentationNetwork):
                                               zip(list(self.upscale_logits_ops)[::-1], seg_outputs[:-1][::-1])])
         if self.anchor_out:
             return tuple([i(j) for i, j in
-                                        zip(list(self.upscale_logits_ops)[::-1], anch_outputs[:-1][::-1])]),seg_outputs[-1]
+                                        zip(list(self.upscale_logits_ops)[::-1], anch_outputs[:-1][::-1])]), seg_outputs[-1]
                         
         else:
             return emb, seg_outputs[-1]
