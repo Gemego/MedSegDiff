@@ -2414,7 +2414,7 @@ class Generic_UNet(SegmentationNetwork):
             nfeatures_from_down = final_num_features # 只在 convolutional_upsampling 为真时 nfeatures_from_down 有用
             nfeatures_from_skip = self.conv_blocks_context[
                 -(2 + u)].output_channels  # self.conv_blocks_context[-1] is bottleneck, so start with -2
-            n_features_after_tu_and_concat = nfeatures_from_skip * 2
+            n_features_after_tu_and_concat = nfeatures_from_skip * 2 # 跳跃连接和上采样后的特征数量
 
             # the first conv reduces the number of features to match those of skip
             # the following convs work on that number of features
