@@ -2346,7 +2346,7 @@ class Generic_UNet(SegmentationNetwork):
 
         for d in range(num_pool): # num_pool 为下采样（即上采样）的次数
             # determine the first stride
-            if d != 0 and self.convolutional_pooling:
+            if d != 0 and self.convolutional_pooling: # convolutional_pooling 表示是否在卷积时候直接进行下采样
                 first_stride = pool_op_kernel_sizes[d - 1]
             else:
                 first_stride = None
@@ -2387,7 +2387,7 @@ class Generic_UNet(SegmentationNetwork):
         # the output of the last conv must match the number of features from the skip connection if we are not using
         # convolutional upsampling. If we use convolutional upsampling then the reduction in feature maps will be
         # done by the transposed conv
-        if self.convolutional_upsampling:
+        if self.convolutional_upsampling: # 表示是否采用卷积的方式进行上采样，否则采用插值的方式上采样
             final_num_features = output_features
         else:
             final_num_features = self.conv_blocks_context[-1].output_channels
