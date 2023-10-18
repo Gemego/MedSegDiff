@@ -2401,6 +2401,8 @@ class Generic_UNet(SegmentationNetwork):
             StackedConvLayers(output_features, final_num_features, 1, self.conv_op, self.conv_kwargs,
                               self.norm_op, self.norm_op_kwargs, self.dropout_op, self.dropout_op_kwargs, self.nonlin,
                               self.nonlin_kwargs, basic_block=basic_block)))
+        # 上述 final_num_features 数量在使用卷积进行上采样时和 output_features 相等（因为后续由转置卷积减少特征数），
+        # 在插值方式上采样时使用上一层 conv_blocks_context 中（即最后一次下采样前）的特征数作为输出特征数（final_num_features）
 
         # if we don't want to do dropout in the localization pathway then we set the dropout prob to zero here
         if not dropout_in_localization:
