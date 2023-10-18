@@ -2346,7 +2346,7 @@ class Generic_UNet(SegmentationNetwork):
 
         for d in range(num_pool): # num_pool 为下采样（即上采样）的次数
             # determine the first stride
-            if d != 0 and self.convolutional_pooling: # convolutional_pooling 表示是否在卷积时候直接进行下采样
+            if d != 0 and self.convolutional_pooling: # convolutional_pooling 表示是否在卷积时通过设置步长为2直接进行下采样
                 first_stride = pool_op_kernel_sizes[d - 1]
             else:
                 first_stride = None
