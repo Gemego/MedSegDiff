@@ -2333,7 +2333,7 @@ class Generic_UNet(SegmentationNetwork):
         else:
             self.max_num_features = max_num_features
 
-        self.conv_blocks_context = []
+        self.conv_blocks_context = [] # 负责下采样的基本卷积模块
         self.conv_blocks_localization = [] # 负责将skip和上采样拼接后的feature map做卷积，将特征数减少为拼接前的数量
         self.conv_trans_blocks_a = []
         self.conv_trans_blocks_b = []
@@ -2370,7 +2370,8 @@ class Generic_UNet(SegmentationNetwork):
                 self.ffparser.append(FFParser(output_features, 256 // (2 **(d + 1)), 256 // (2 **(d + 2)) + 1))
 
             if not self.convolutional_pooling:
-                self.td.append(pool_op(pool_op_kernel_sizes[d]))
+                self.td.append(pool_op(pool_op_kernel_sizes[d])) # 不采用基本卷积块（StackedConvLayers）进行下采样时，直接采用
+                # max pooling的方式进行下采样
 
             input_features = output_features
             output_features = int(np.round(output_features * feat_map_mul_on_downscale)) # 每次下采样特征数呈倍数增加
@@ -2420,8 +2421,8 @@ class Generic_UNet(SegmentationNetwork):
             # the first conv reduces the number of features to match those of skip
             # the following convs work on that number of features
             # if not convolutional upsampling then the final conv reduces the num of features again
-            if u != num_pool - 1 and not self.convolutional_upsampling: 
-                final_num_features = self.conv_blocks_context[-(3 + u)].output_channels
+            if u != num_pool - 1 and not self.convolutional_upsampling: # 不采用卷积进行上采样时，输出特征数（final_num_features）
+                final_num_features = self.conv_blocks_context[-(3 + u)].output_channels # 为该级下采样上一级的特征数
             else:
                 final_num_features = nfeatures_from_skip
 
@@ -2447,7 +2448,7 @@ class Generic_UNet(SegmentationNetwork):
         if self._deep_supervision:
             for ds in range(len(self.conv_blocks_localization)):
                 self.seg_outputs.append(conv_op(self.conv_blocks_localization[ds][-1].output_channels, num_classes,
-                                                1, 1, 0, 1, 1, seg_output_use_bias))
+                                                1, 1, 0, 1, 1, seg_output_use_bias)) # 1x1卷积对肿瘤类别分类
         else:
             self.seg_outputs.append(conv_op(self.conv_blocks_localization[-1][-1].output_channels, num_classes,
                             1, 1, 0, 1, 1, seg_output_use_bias))
