@@ -2322,7 +2322,8 @@ class Generic_UNet(SegmentationNetwork):
 
         self.conv_pad_sizes = []
         for krnl in self.conv_kernel_sizes:
-            self.conv_pad_sizes.append([1 if i == 3 else 0 for i in krnl])
+            self.conv_pad_sizes.append([1 if i == 3 else 0 for i in krnl]) # 3x3 的卷积核在原特征图左右各添加一个padding后不
+            # 改变输入尺寸，即输出尺寸 = 输入尺寸
 
         if max_num_features is None:
             if self.conv_op == nn.Conv3d:
@@ -2428,7 +2429,8 @@ class Generic_UNet(SegmentationNetwork):
                 self.tu.append(hwUpsample(scale_factor=pool_op_kernel_sizes[-(u + 1)], mode=upsample_mode))
             else:
                 self.tu.append(transpconv(nfeatures_from_down, nfeatures_from_skip, pool_op_kernel_sizes[-(u + 1)],
-                                          pool_op_kernel_sizes[-(u + 1)], bias=False))
+                                          pool_op_kernel_sizes[-(u + 1)], bias=False)) # 转置卷积将特征数减少为从bottleneck
+                # 算起前一个下采样的特征数
 
             self.conv_kwargs['kernel_size'] = self.conv_kernel_sizes[-(u + 1)]
             self.conv_kwargs['padding'] = self.conv_pad_sizes[-(u + 1)]
