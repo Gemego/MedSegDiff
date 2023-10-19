@@ -2420,7 +2420,7 @@ class Generic_UNet(SegmentationNetwork):
             # the first conv reduces the number of features to match those of skip
             # the following convs work on that number of features
             # if not convolutional upsampling then the final conv reduces the num of features again
-            if u != num_pool - 1 and not self.convolutional_upsampling:
+            if u != num_pool - 1 and not self.convolutional_upsampling: 
                 final_num_features = self.conv_blocks_context[-(3 + u)].output_channels
             else:
                 final_num_features = nfeatures_from_skip
