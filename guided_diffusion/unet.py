@@ -2431,7 +2431,8 @@ class Generic_UNet(SegmentationNetwork):
             else:
                 self.tu.append(transpconv(nfeatures_from_down, nfeatures_from_skip, pool_op_kernel_sizes[-(u + 1)],
                                           pool_op_kernel_sizes[-(u + 1)], bias=False)) # 转置卷积将特征数减少为从bottleneck
-                # 算起前一个下采样的特征数
+                # 算起前一个下采样的特征数。转置卷积中，输出尺寸 = （输入尺寸-1）* 步长 - 2 * 填充 + 卷积核大小，此处计算出来即输出尺寸
+                # 为输入尺寸的两倍
 
             self.conv_kwargs['kernel_size'] = self.conv_kernel_sizes[-(u + 1)]
             self.conv_kwargs['padding'] = self.conv_pad_sizes[-(u + 1)]
@@ -2505,7 +2506,7 @@ class Generic_UNet(SegmentationNetwork):
                 x = x * ha * hb
 
 
-        x = self.conv_blocks_context[-1](x)
+        x = self.conv_blocks_context[-1](x) # bottleneck 卷积计算
         emb = conv_nd(2, x.size(1), 512, 1).to(device = x.device)(x)
 
         for u in range(len(self.tu)):
